@@ -1,0 +1,21 @@
+
+#配置mysql本地数据库
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/dbtest?serverTimezone=UTC
+      username: root
+      password: 12345
+
+#设置MP的相关配置
+mybatis-plus:
+  global-config:
+    db-config:
+      #      以tbl_作为所有数据库表头
+      table-prefix: tbl_
+      #      插入时表单id类型，这里使用数据库自增
+      id-type: auto
+  configuration:
+    #    日志运行模式，这里将日志直接打印到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
