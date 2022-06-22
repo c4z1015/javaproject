@@ -3,7 +3,7 @@ package org.czb.xingcan.wx.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"org.czb.xingcan.db"})
+@SpringBootApplication(scanBasePackages = {"org.czb.xingcan.db","org.czb.xingcan.wx.api"})
 public class XingcanWxApiApplication {
 
     public static void main(String[] args) {
