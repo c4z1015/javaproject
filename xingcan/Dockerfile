@@ -23,5 +23,5 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # Run the web service on container startup.
-CMD ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=8081","-jar","/xingcan-wx-api/target/xingcan-wx-api-0.0.1.jar"]
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=8081","-jar","./xingcan-wx-api/target/xingcan-wx-api-0.0.1.jar"]
 
