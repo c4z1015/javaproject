@@ -18,38 +18,42 @@
         <java.version>11</java.version>
     </properties>
     <modules>
-<!--        <module>xingcan-core</module>-->
+        <module>xingcan-core</module>
         <module>xingcan-db</module>
-<!--        <module>xingcan-wx-api</module>-->
+        <module>xingcan-wx-api</module>
         <module>xingcan-admin-api</module>
-<!--        <module>xingcan-all</module>-->
+        <module>xingcan-all</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.czb</groupId>
+                <artifactId>xingcan-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.czb</groupId>
+                <artifactId>xingcan-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.czb</groupId>
+                <artifactId>xingcan-wx-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.czb</groupId>
+                <artifactId>xingcan-admin-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.czb</groupId>
+                <artifactId>xingcan-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.czb</groupId>-->
-        <!--            <artifactId>xingcan-core</artifactId>-->
-        <!--            <version>0.0.1</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.czb</groupId>-->
-        <!--            <artifactId>xingcan-db</artifactId>-->
-        <!--            <version>0.0.1</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.czb</groupId>-->
-        <!--            <artifactId>xingcan-wx-api</artifactId>-->
-        <!--            <version>0.0.1</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.czb</groupId>-->
-        <!--            <artifactId>xingcan-admin-api</artifactId>-->
-        <!--            <version>0.0.1</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.czb</groupId>-->
-        <!--            <artifactId>xingcan-all</artifactId>-->
-        <!--            <version>0.0.1</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

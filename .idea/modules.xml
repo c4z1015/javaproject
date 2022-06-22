@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/javaproject.iml" filepath="$PROJECT_DIR$/.idea/javaproject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xingcan/xingcan.iml" filepath="$PROJECT_DIR$/xingcan/xingcan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xingcan/xingcan-admin-api/xingcan-admin-api.iml" filepath="$PROJECT_DIR$/xingcan/xingcan-admin-api/xingcan-admin-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xingcan/xingcan-db/xingcan-db.iml" filepath="$PROJECT_DIR$/xingcan/xingcan-db/xingcan-db.iml" />
+    </modules>
+  </component>
+</project>

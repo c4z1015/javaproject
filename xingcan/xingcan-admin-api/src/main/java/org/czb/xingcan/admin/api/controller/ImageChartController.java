@@ -34,7 +34,6 @@ public class ImageChartController {
     @GetMapping("/companyDetails")
     public List<ImageChart> getCompanyDetails() {
         QueryWrapper<ImageChart> wr = new QueryWrapper<>();
-        wr.o
         wr.eq("func_type","companyDetails");
         return imageChartService.list(wr);
     }
