@@ -1,0 +1,15 @@
+# Use the official maven/Java 8 image to create a build artifact.
+# https://hub.docker.com/_/maven
+FROM maven:3.8.1-jdk-11-alpine as builder
+
+# Copy local code to the container image.
+WORKDIR /xingcan-wx-api
+COPY pom.xml .
+COPY src ./src
+
+# Build a release artifact.
+RUN mvn package -DskipTests
+
+# Run the web service on container startup.
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=8081","-jar","/xingcan-wx-api/target/xingcan-wx-api-0.0.1.jar"]
+
