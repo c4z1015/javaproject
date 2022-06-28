@@ -18,7 +18,7 @@ COPY xingcan-core/src ./xingcan-core/src
 COPY xingcan-db/src ./xingcan-db/src
 COPY src ./src
 
-
+COPY settings.xml /usr/share/maven/conf/settings.xml
 # Build a release artifact.
 RUN mvn package -DskipTests
 

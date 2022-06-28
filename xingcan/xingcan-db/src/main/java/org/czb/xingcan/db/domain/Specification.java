@@ -1,20 +1,14 @@
 package org.czb.xingcan.db.domain;
 
-
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class ImageChart {
+public class Specification {
     private Integer id;
-    private Integer shopId;
     private Integer goodId;
     private String name;
-    private String info;
-    private String src;
-    private String url;
-    private String displayLocation;
     private Date addTime;
     private Date updateTime;
     private Integer deleteFlag;
@@ -25,14 +19,6 @@ public class ImageChart {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
     }
 
     public Integer getGoodId() {
@@ -49,38 +35,6 @@ public class ImageChart {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public String getSrc() {
-        return src;
-    }
-
-    public void setSrc(String src) {
-        this.src = src;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getDisplayLocation() {
-        return displayLocation;
-    }
-
-    public void setDisplayLocation(String displayLocation) {
-        this.displayLocation = displayLocation;
     }
 
     public Date getAddTime() {
