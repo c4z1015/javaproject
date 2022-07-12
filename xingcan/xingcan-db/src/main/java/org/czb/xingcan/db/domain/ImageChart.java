@@ -1,6 +1,7 @@
 package org.czb.xingcan.db.domain;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,15 +9,19 @@ import java.util.Date;
 @Data
 public class ImageChart {
     private Integer id;
-    private Integer shopId;
+    private Integer storeId;
     private Integer goodId;
     private String name;
     private String info;
     private String src;
     private String url;
+    @TableField(exist = false)
     private String displayLocation;
+    @TableField(exist = false)
     private Date addTime;
+    @TableField(exist = false)
     private Date updateTime;
+    @TableField(exist = false)
     private Integer deleteFlag;
 
     public Integer getId() {
@@ -27,12 +32,12 @@ public class ImageChart {
         this.id = id;
     }
 
-    public Integer getShopId() {
-        return shopId;
+    public Integer getStoreId() {
+        return storeId;
     }
 
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public Integer getGoodId() {

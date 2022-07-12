@@ -1,16 +1,22 @@
 package org.czb.xingcan.db.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class Specification {
+public class GoodPrice {
     private Integer id;
     private Integer goodId;
-    private String name;
+    private Integer priceType;
+    private Integer price;
+    private String priceTypeName;
+    @TableField(exist = false)
     private Date addTime;
+    @TableField(exist = false)
     private Date updateTime;
+    @TableField(exist = false)
     private Integer deleteFlag;
 
     public Integer getId() {
@@ -29,12 +35,28 @@ public class Specification {
         this.goodId = goodId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getPriceType() {
+        return priceType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPriceType(Integer priceType) {
+        this.priceType = priceType;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getPriceTypeName() {
+        return priceTypeName;
+    }
+
+    public void setPriceTypeName(String priceTypeName) {
+        this.priceTypeName = priceTypeName;
     }
 
     public Date getAddTime() {

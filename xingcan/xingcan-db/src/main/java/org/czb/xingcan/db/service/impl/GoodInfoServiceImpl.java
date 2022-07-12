@@ -2,20 +2,15 @@ package org.czb.xingcan.db.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.czb.xingcan.db.dao.GoodInfoMapper;
-import org.czb.xingcan.db.dao.GoodTagMapper;
-import org.czb.xingcan.db.dao.TagMapper;
-import org.czb.xingcan.db.domain.GoodInfo;
-import org.czb.xingcan.db.domain.GoodTag;
-import org.czb.xingcan.db.domain.Tag;
+import org.czb.xingcan.db.dao.*;
+import org.czb.xingcan.db.domain.*;
 import org.czb.xingcan.db.service.GoodInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GoodInfoServiceImpl extends ServiceImpl<GoodInfoMapper, GoodInfo> implements GoodInfoService {
@@ -28,6 +23,19 @@ public class GoodInfoServiceImpl extends ServiceImpl<GoodInfoMapper, GoodInfo> i
 
     @Resource
     private TagMapper tagMapper;
+
+    @Resource
+    private SubGoodInfoMapper subGoodInfoMapper;
+
+    @Resource
+    private GoodSpecMapper goodSpecMapper;
+
+    @Resource
+    private GoodPriceMapper goodPriceMapper;
+
+    @Resource
+    private GoodStockMapper goodStockMapper;
+
 
     @Override
     public List<GoodInfo> queryGoodsList(QueryWrapper<GoodInfo> qw, boolean b) {
@@ -66,5 +74,85 @@ public class GoodInfoServiceImpl extends ServiceImpl<GoodInfoMapper, GoodInfo> i
             goodInfo.setTags(tags);
         }
         return page;
+    }
+
+    @Override
+    public List<SubGoodInfo> querySubGoodListByParentId(Integer id) {
+        QueryWrapper<SubGoodInfo> subGoodInfoQueryWrapper = new QueryWrapper<>();
+        subGoodInfoQueryWrapper.eq("parent_id",id);
+        subGoodInfoQueryWrapper.eq("delete_flag",0);
+        List<SubGoodInfo> subGoodInfoList = subGoodInfoMapper.selectList(subGoodInfoQueryWrapper);
+        for(SubGoodInfo subGoodInfo : subGoodInfoList){
+
+            QueryWrapper<GoodSpec> goodSpecQueryWrapper = new QueryWrapper<>();
+            goodSpecQueryWrapper.eq("good_id",subGoodInfo.getId());
+            goodSpecQueryWrapper.eq("delete_flag",0);
+            List<GoodSpec> goodSpecList = goodSpecMapper.selectList(goodSpecQueryWrapper);
+
+            QueryWrapper<GoodPrice> goodPriceQueryWrapper = new QueryWrapper<>();
+            goodPriceQueryWrapper.eq("good_id",subGoodInfo.getId());
+            goodPriceQueryWrapper.eq("delete_flag",0);
+            List<GoodPrice> goodPriceList = goodPriceMapper.selectList(goodPriceQueryWrapper);
+
+            QueryWrapper<GoodStock> goodStockQueryWrapper = new QueryWrapper<>();
+            goodStockQueryWrapper.eq("good_id",subGoodInfo.getId());
+            goodStockQueryWrapper.eq("delete_flag",0);
+            GoodStock goodStock = goodStockMapper.selectOne(goodStockQueryWrapper);
+
+            subGoodInfo.setGoodSpecs(goodSpecList);
+            subGoodInfo.setGoodPrices(goodPriceList);
+            subGoodInfo.setGoodStock(goodStock);
+        }
+        return subGoodInfoList;
+    }
+
+    @Override
+    public List<SpecProperty> querySpecPropertyListById(Integer id) {
+        List<GoodSpec> goodSpecs = new ArrayList<>();
+        QueryWrapper<SubGoodInfo> subGoodInfoQueryWrapper = new QueryWrapper<>();
+        subGoodInfoQueryWrapper.eq("parent_id",id);
+        subGoodInfoQueryWrapper.eq("delete_flag",0);
+        List<SubGoodInfo> subGoodInfoList = subGoodInfoMapper.selectList(subGoodInfoQueryWrapper);
+        for(SubGoodInfo subGoodInfo : subGoodInfoList){
+            QueryWrapper<GoodSpec> goodSpecQueryWrapper = new QueryWrapper<>();
+            goodSpecQueryWrapper.eq("good_id",subGoodInfo.getId());
+            goodSpecQueryWrapper.eq("delete_flag",0);
+            List<GoodSpec> goodSpecList = goodSpecMapper.selectList(goodSpecQueryWrapper);
+            goodSpecs.addAll(goodSpecList);
+        }
+        List<SpecProperty> specHeads = new ArrayList<>();
+        Map<String,Integer> check = new HashMap<>();
+        for(GoodSpec goodSpec : goodSpecs){
+            if(check!=null&&check.containsKey(goodSpec.getSpecName())){
+                if(check!=null&&check.containsKey(goodSpec.getSubSpecName())){
+                    continue;
+                }
+                SpecProperty specSecond = new SpecProperty();
+                specSecond.setId(goodSpec.getSubSpecId());
+                specSecond.setName(goodSpec.getSubSpecName());
+                for(SpecProperty specProperty : specHeads){
+                    if(goodSpec.getSpecName().equals(specProperty.getName())){
+                        specProperty.getSpecPropertyList().add(specSecond);
+                    }else{
+                        continue;
+                    }
+                }
+                check.put(goodSpec.getSubSpecName(),goodSpec.getSubSpecId());
+                continue;
+            }
+            SpecProperty specFirst = new SpecProperty();
+            specFirst.setId(goodSpec.getSpecId());
+            specFirst.setName(goodSpec.getSpecName());
+            List<SpecProperty> specSecondList = new ArrayList<>();
+            SpecProperty specSecond = new SpecProperty();
+            specSecond.setId(goodSpec.getSubSpecId());
+            specSecond.setName(goodSpec.getSubSpecName());
+            specSecondList.add(specSecond);
+            specFirst.setSpecPropertyList(specSecondList);
+            specHeads.add(specFirst);
+            check.put(goodSpec.getSpecName(),goodSpec.getSpecId());
+            check.put(goodSpec.getSubSpecName(),goodSpec.getSubSpecId());
+        }
+        return specHeads;
     }
 }

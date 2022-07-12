@@ -9,26 +9,27 @@ import java.util.List;
 @Data
 public class GoodInfo {
     private Integer id;
+    private Integer storeId;
     private String title;
     private String primaryImage;
     private Integer available;
-    private Integer price;
-    private Integer salePrice;
-    private Integer linePrice;
+    private Integer minSalePrice;
+    private Integer minLinePrice;
+    private Integer maxSalePrice;
+    private Integer maxLinePrice;
     private Integer stockQuantity;
-    private Integer safeStockQuantity;
-    private Integer soldNum;
-    private Integer isPutOnSale;
-    private Integer skuId;
-    private Integer weight;
-    private String weightUnit;
-    private Integer volume;
-    private String volumeUnit;
+    private Integer soldQuantity;
+    private Integer isPut;
+    @TableField(exist = false)
     private Date addTime;
+    @TableField(exist = false)
     private Date updateTime;
+    @TableField(exist = false)
     private Integer deleteFlag;
+    @TableField(exist = false)
     private Integer adFlag;
-
+    @TableField(exist = false)
+    private Integer gridFlag;
     @TableField(exist = false)
     private List<Tag> tags;
 
@@ -38,6 +39,14 @@ public class GoodInfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public String getTitle() {
@@ -64,28 +73,36 @@ public class GoodInfo {
         this.available = available;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getMinSalePrice() {
+        return minSalePrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setMinSalePrice(Integer minSalePrice) {
+        this.minSalePrice = minSalePrice;
     }
 
-    public Integer getSalePrice() {
-        return salePrice;
+    public Integer getMinLinePrice() {
+        return minLinePrice;
     }
 
-    public void setSalePrice(Integer salePrice) {
-        this.salePrice = salePrice;
+    public void setMinLinePrice(Integer minLinePrice) {
+        this.minLinePrice = minLinePrice;
     }
 
-    public Integer getLinePrice() {
-        return linePrice;
+    public Integer getMaxSalePrice() {
+        return maxSalePrice;
     }
 
-    public void setLinePrice(Integer linePrice) {
-        this.linePrice = linePrice;
+    public void setMaxSalePrice(Integer maxSalePrice) {
+        this.maxSalePrice = maxSalePrice;
+    }
+
+    public Integer getMaxLinePrice() {
+        return maxLinePrice;
+    }
+
+    public void setMaxLinePrice(Integer maxLinePrice) {
+        this.maxLinePrice = maxLinePrice;
     }
 
     public Integer getStockQuantity() {
@@ -96,68 +113,20 @@ public class GoodInfo {
         this.stockQuantity = stockQuantity;
     }
 
-    public Integer getSafeStockQuantity() {
-        return safeStockQuantity;
+    public Integer getSoldQuantity() {
+        return soldQuantity;
     }
 
-    public void setSafeStockQuantity(Integer safeStockQuantity) {
-        this.safeStockQuantity = safeStockQuantity;
+    public void setSoldQuantity(Integer soldQuantity) {
+        this.soldQuantity = soldQuantity;
     }
 
-    public Integer getSoldNum() {
-        return soldNum;
+    public Integer getIsPut() {
+        return isPut;
     }
 
-    public void setSoldNum(Integer soldNum) {
-        this.soldNum = soldNum;
-    }
-
-    public Integer getIsPutOnSale() {
-        return isPutOnSale;
-    }
-
-    public void setIsPutOnSale(Integer isPutOnSale) {
-        this.isPutOnSale = isPutOnSale;
-    }
-
-    public Integer getSkuId() {
-        return skuId;
-    }
-
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
-    public String getWeightUnit() {
-        return weightUnit;
-    }
-
-    public void setWeightUnit(String weightUnit) {
-        this.weightUnit = weightUnit;
-    }
-
-    public Integer getVolume() {
-        return volume;
-    }
-
-    public void setVolume(Integer volume) {
-        this.volume = volume;
-    }
-
-    public String getVolumeUnit() {
-        return volumeUnit;
-    }
-
-    public void setVolumeUnit(String volumeUnit) {
-        this.volumeUnit = volumeUnit;
+    public void setIsPut(Integer isPut) {
+        this.isPut = isPut;
     }
 
     public Date getAddTime() {
@@ -190,6 +159,14 @@ public class GoodInfo {
 
     public void setAdFlag(Integer adFlag) {
         this.adFlag = adFlag;
+    }
+
+    public Integer getGridFlag() {
+        return gridFlag;
+    }
+
+    public void setGridFlag(Integer gridFlag) {
+        this.gridFlag = gridFlag;
     }
 
     public List<Tag> getTags() {

@@ -1,17 +1,25 @@
 package org.czb.xingcan.db.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SpecProperty {
+
     private Integer id;
-    private Integer specId;
+    private Integer parentId;
     private String name;
+    @TableField(exist = false)
     private Date addTime;
+    @TableField(exist = false)
     private Date updateTime;
+    @TableField(exist = false)
     private Integer deleteFlag;
+    @TableField(exist = false)
+    private List<SpecProperty> specPropertyList;
 
     public Integer getId() {
         return id;
@@ -21,12 +29,12 @@ public class SpecProperty {
         this.id = id;
     }
 
-    public Integer getSpecId() {
-        return specId;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setSpecId(Integer specId) {
-        this.specId = specId;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public String getName() {
@@ -59,5 +67,13 @@ public class SpecProperty {
 
     public void setDeleteFlag(Integer deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    public List<SpecProperty> getSpecPropertyList() {
+        return specPropertyList;
+    }
+
+    public void setSpecPropertyList(List<SpecProperty> specPropertyList) {
+        this.specPropertyList = specPropertyList;
     }
 }
