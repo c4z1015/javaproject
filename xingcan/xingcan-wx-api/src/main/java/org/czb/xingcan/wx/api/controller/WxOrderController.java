@@ -36,8 +36,12 @@ public class WxOrderController {
     private CartService cartService;
 
     @GetMapping("/index")
-    public Object index(@RequestHeader("X-WX-OPENID") String openId) {
-        return null;
+    public Object index(@RequestHeader("X-WX-OPENID") String openId, @RequestParam("orderNo") String orderNo) {
+        QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>();
+        orderQueryWrapper.eq("order_no",orderNo);
+        orderQueryWrapper.eq("open_id",openId);
+        Order order =  orderService.queryOrder(orderQueryWrapper);
+        return ResponseUtil.ok(order);
     }
 
     @PostMapping("/confirm")
@@ -91,6 +95,7 @@ public class WxOrderController {
                 order.setRemark(store.getRemark());
                 order.setStoreId(store.getId());
                 order.setStoreName(store.getTitle());
+                order.setStorePhone(store.getTelephone());
                 order.setUserName(userAddress.getName());
                 order.setUserPhone(userAddress.getPhone());
                 order.setDetailAddress(userAddress.getProvinceName()+userAddress.getCityName()+userAddress.getDistrictName()+userAddress.getDetailAddress());

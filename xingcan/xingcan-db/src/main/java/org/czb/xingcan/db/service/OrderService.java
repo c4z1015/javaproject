@@ -14,4 +14,6 @@ public interface OrderService extends IService<Order> {
     void saveOrderPayment(OrderPayment orderPayment);
 
     IPage<Order> queryOrdersList(IPage iPage, QueryWrapper<Order> orderQueryWrapper);
+
+    Order queryOrder(QueryWrapper<Order> orderQueryWrapper);
 }

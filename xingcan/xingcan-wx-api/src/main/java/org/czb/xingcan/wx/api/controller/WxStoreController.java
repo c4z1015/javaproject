@@ -165,7 +165,7 @@ public class WxStoreController {
                                 @RequestParam("all") Integer all,
                                 @RequestParam("sorts") String sorts,
                                 @RequestParam("min") Integer min,
-                                @RequestParam("max") Integer max) {
+                                @RequestParam("max") Integer max, @RequestParam("keywords") String keywords) {
 
         //获取店铺列表数据
         QueryWrapper<Store> storeQueryWrapper = new QueryWrapper<>();
@@ -173,6 +173,9 @@ public class WxStoreController {
         storeQueryWrapper.eq("delete_flag",0);
         if(belong!=null){
             storeQueryWrapper.eq("belong",belong);
+        }
+        if(keywords!=null && keywords.length()>0){
+            storeQueryWrapper.and(wrapper -> wrapper.like("title",keywords).or().like("address",keywords).or().like("main_business",keywords));
         }
         storeQueryWrapper.orderByDesc("update_time");
         IPage<Store> storesList =  storeService.queryStoresList(iPage, storeQueryWrapper);

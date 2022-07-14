@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.czb.xingcan.core.utils.ResponseUtil;
-import org.czb.xingcan.db.domain.GoodInfo;
-import org.czb.xingcan.db.domain.ImageChart;
-import org.czb.xingcan.db.domain.SpecProperty;
-import org.czb.xingcan.db.domain.SubGoodInfo;
+import org.czb.xingcan.db.domain.*;
 import org.czb.xingcan.db.service.GoodInfoService;
 import org.czb.xingcan.db.service.ImageChartService;
+import org.czb.xingcan.db.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +39,9 @@ public class WxGoodController {
     @Autowired
     private GoodInfoService goodInfoService;
 
+    @Autowired
+    private StoreService storeService;
+
     @GetMapping("/index")
     public Object index(@RequestHeader("X-WX-OPENID") String openId ,@RequestParam("id") Integer id) {
         //优先获取缓存数据，没做先pass
@@ -51,6 +52,9 @@ public class WxGoodController {
         //获取商品基础数据
         Callable<GoodInfo> goodInfoCallable = ()->{
             GoodInfo goodInfo =  goodInfoService.getById(id);
+            Store store = storeService.getById(goodInfo.getStoreId());
+            goodInfo.setStoreName(store.getTitle());
+            goodInfo.setStorePhone(store.getTelephone());
             return goodInfo;
         };
 

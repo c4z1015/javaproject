@@ -9,6 +9,7 @@ import org.czb.xingcan.db.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,5 +81,40 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             order.setGoodsList(orderGoodList);
         }
         return page;
+    }
+
+    @Override
+    public Order queryOrder(QueryWrapper<Order> qw) {
+        Order order = orderMapper.selectOne(qw);
+        QueryWrapper<OrderGood> orderGoodQueryWrapper = new QueryWrapper<>();
+        orderGoodQueryWrapper.eq("order_no",order.getOrderNo());
+        List<OrderGood> orderGoodList = orderGoodMapper.selectList(orderGoodQueryWrapper);
+        for(OrderGood good : orderGoodList){
+            SubGoodInfo subGoodInfo = subGoodInfoMapper.selectById(good.getSkuId());
+            good.setTitle(subGoodInfo.getTitle());
+            good.setThumb(subGoodInfo.getPrimaryImage());
+            QueryWrapper<GoodSpec> goodSpecQueryWrapper = new QueryWrapper<>();
+            goodSpecQueryWrapper.eq("delete_flag",0);
+            goodSpecQueryWrapper.eq("good_id",subGoodInfo.getId());
+            List<GoodSpec> goodSpecList = goodSpecMapper.selectList(goodSpecQueryWrapper);
+            List<String> specs = new ArrayList<>();
+            for(GoodSpec goodSpec : goodSpecList){
+                specs.add(goodSpec.getSubSpecName());
+            }
+            good.setSpecs(specs);
+        }
+        QueryWrapper<OrderButton> orderButtonQueryWrapper = new QueryWrapper<>();
+        orderButtonQueryWrapper.eq("delete_flag",0);
+        orderButtonQueryWrapper.eq("order_status",order.getOrderStatus());
+        List<OrderButton> orderButtons = orderButtonMapper.selectList(orderButtonQueryWrapper);
+        for(OrderButton orderButton : orderButtons){
+            orderButton.setPrimary(0==orderButton.getPrimaryStatus());
+        }
+        order.setButtons(orderButtons);
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time =formatter.format(order.getAddTime());
+        order.setCreateTime(time);
+        order.setGoodsList(orderGoodList);
+        return order;
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GoodInfoServiceImpl extends ServiceImpl<GoodInfoMapper, GoodInfo> implements GoodInfoService {
@@ -99,6 +98,14 @@ public class GoodInfoServiceImpl extends ServiceImpl<GoodInfoMapper, GoodInfo> i
             goodStockQueryWrapper.eq("delete_flag",0);
             GoodStock goodStock = goodStockMapper.selectOne(goodStockQueryWrapper);
 
+            for(GoodPrice goodPrice : goodPriceList){
+                if(goodPrice.getPriceType() == 1){
+                    subGoodInfo.setPrice(goodPrice.getPrice());
+                }
+                if(goodPrice.getPriceType() == 2){
+                    subGoodInfo.setLinePrice(goodPrice.getPrice());
+                }
+            }
             subGoodInfo.setGoodSpecs(goodSpecList);
             subGoodInfo.setGoodPrices(goodPriceList);
             subGoodInfo.setGoodStock(goodStock);
