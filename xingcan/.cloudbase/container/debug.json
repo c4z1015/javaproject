@@ -3,7 +3,8 @@
     {
       "name": "xingcan",
       "domain": "",
-      "ip": ""
+      "ip": "",
+      "containerId": "67f3c358352fd14a51af7cf95b25a391524bb7148a8f38827999aa566e591b82"
     }
   ],
   "config": {
