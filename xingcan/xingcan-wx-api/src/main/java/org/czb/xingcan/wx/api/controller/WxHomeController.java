@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.czb.xingcan.core.utils.ResponseUtil;
-import org.czb.xingcan.db.domain.Cart;
 import org.czb.xingcan.db.domain.GoodInfo;
 import org.czb.xingcan.db.domain.ImageChart;
 import org.czb.xingcan.db.domain.SearchHistory;
@@ -51,25 +50,52 @@ public class WxHomeController {
         //优先获取缓存数据，没做先pass
 
         //创建线程池
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(7);
 
-        //获取首页轮播图广告位数据
-        Callable<List> imageChartHeadListCallable = ()->{
-            QueryWrapper<ImageChart> imageChartQueryWrapper = new QueryWrapper<>();
-            imageChartQueryWrapper.eq("delete_flag",0);
-            imageChartQueryWrapper.eq("display_location","supply-home-head");
-            List<ImageChart> imageChartHeadList =  imageChartService.list(imageChartQueryWrapper);
-            return imageChartHeadList;
+        //获取货源联盟首页轮播图广告位数据
+        Callable<List> imageChartHeadSwiperListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartHeadSwiperQueryWrapper = new QueryWrapper<>();
+            imageChartHeadSwiperQueryWrapper.eq("delete_flag",0);
+            imageChartHeadSwiperQueryWrapper.eq("display_location","supply-home-head-swiper");
+            List<ImageChart> imageChartHeadSwiperList =  imageChartService.list(imageChartHeadSwiperQueryWrapper);
+            return imageChartHeadSwiperList;
+        };
+
+        //获取货源联盟首页宫格图广告位数据
+        Callable<List> imageChartHeadGridListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartHeadGridQueryWrapper = new QueryWrapper<>();
+            imageChartHeadGridQueryWrapper.eq("delete_flag",0);
+            imageChartHeadGridQueryWrapper.eq("display_location","supply-home-head-grid");
+            List<ImageChart> imageChartHeadGridList =  imageChartService.list(imageChartHeadGridQueryWrapper);
+            return imageChartHeadGridList;
+        };
+
+        //获取货源联盟首页横向滑动图广告位数据
+        Callable<List> imageChartHeadScrollListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartHeadScrollQueryWrapper = new QueryWrapper<>();
+            imageChartHeadScrollQueryWrapper.eq("delete_flag",0);
+            imageChartHeadScrollQueryWrapper.eq("display_location","supply-home-head-scroll");
+            List<ImageChart> imageChartHeadScrollList =  imageChartService.list(imageChartHeadScrollQueryWrapper);
+            return imageChartHeadScrollList;
         };
 
 
         //获取首页宫格栏左侧轮播图广告位数据
-        Callable<List> imageChartGridListCallable = ()->{
-            QueryWrapper<ImageChart> imageChartQueryWrapper = new QueryWrapper<>();
-            imageChartQueryWrapper.eq("delete_flag",0);
-            imageChartQueryWrapper.eq("display_location","supply-home-grid-left");
-            List<ImageChart> imageChartGridList =  imageChartService.list(imageChartQueryWrapper);
-            return imageChartGridList;
+        Callable<List> imageChartBodySwiperListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartBodySwiperQueryWrapper = new QueryWrapper<>();
+            imageChartBodySwiperQueryWrapper.eq("delete_flag",0);
+            imageChartBodySwiperQueryWrapper.eq("display_location","supply-home-body-swiper");
+            List<ImageChart> imageChartBodySwiperList =  imageChartService.list(imageChartBodySwiperQueryWrapper);
+            return imageChartBodySwiperList;
+        };
+
+        //获取首页宫格栏右侧宫格图数据
+        Callable<List> imageChartBodyGridListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartBodyGridQueryWrapper = new QueryWrapper<>();
+            imageChartBodyGridQueryWrapper.eq("delete_flag",0);
+            imageChartBodyGridQueryWrapper.eq("display_location","supply-home-body-grid");
+            List<ImageChart> imageChartBodyGridList =  imageChartService.list(imageChartBodyGridQueryWrapper);
+            return imageChartBodyGridList;
         };
 
         //获取首页广告商品数据
@@ -94,21 +120,30 @@ public class WxHomeController {
         };
 
         //加入线程池任务队列
-        FutureTask<List> imageChartHeadTask = new FutureTask<>(imageChartHeadListCallable);
-        FutureTask<List> imageChartGridTask = new FutureTask<>(imageChartGridListCallable);
+        FutureTask<List> imageChartHeadSwiperTask = new FutureTask<>(imageChartHeadSwiperListCallable);
+        FutureTask<List> imageChartHeadGridTask = new FutureTask<>(imageChartHeadGridListCallable);
+        FutureTask<List> imageChartHeadScrollTask = new FutureTask<>(imageChartHeadScrollListCallable);
+        FutureTask<List> imageChartBodySwiperTask = new FutureTask<>(imageChartBodySwiperListCallable);
+        FutureTask<List> imageChartBodyGridTask = new FutureTask<>(imageChartBodyGridListCallable);
         FutureTask<List> adGoodsTask = new FutureTask<>(adGoodsListCallable);
         FutureTask<IPage> goodsTask = new FutureTask<>(goodsListCallable);
 
         //提交任务队列
-        executorService.submit(imageChartHeadTask);
-        executorService.submit(imageChartGridTask);
+        executorService.submit(imageChartHeadSwiperTask);
+        executorService.submit(imageChartHeadGridTask);
+        executorService.submit(imageChartHeadScrollTask);
+        executorService.submit(imageChartBodySwiperTask);
+        executorService.submit(imageChartBodyGridTask);
         executorService.submit(adGoodsTask);
         executorService.submit(goodsTask);
 
         Map<String, Object> entity = new HashMap<>();
         try {
-            entity.put("imageChartHead", imageChartHeadTask.get());
-            entity.put("imageChartGrid", imageChartGridTask.get());
+            entity.put("imageChartHeadSwiper", imageChartHeadSwiperTask.get());
+            entity.put("imageChartHeadGrid", imageChartHeadGridTask.get());
+            entity.put("imageChartHeadScroll", imageChartHeadScrollTask.get());
+            entity.put("imageChartBodySwiper", imageChartBodySwiperTask.get());
+            entity.put("imageChartBodyGrid", imageChartBodyGridTask.get());
             entity.put("adGoods", adGoodsTask.get());
             entity.put("goods", goodsTask.get());
             //缓存数据，没做先pass

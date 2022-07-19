@@ -4,7 +4,8 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://10.0.224.11:3306/xingcan?serverTimezone=UTC
+#      url: jdbc:mysql://10.0.224.11:3306/xingcan?serverTimezone=UTC
+      url: jdbc:mysql://sh-cynosdbmysql-grp-4lrm73lm.sql.tencentcdb.com:24589/xingcan?serverTimezone=UTC
       username: admin
       password: 2007c4zddcZ
 

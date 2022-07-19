@@ -47,7 +47,7 @@ public class WxGoodController {
         //优先获取缓存数据，没做先pass
 
         //创建线程池
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(6);
 
         //获取商品基础数据
         Callable<GoodInfo> goodInfoCallable = ()->{
@@ -79,6 +79,15 @@ public class WxGoodController {
             return imageChartBodyList;
         };
 
+        //获取商品详情图数据
+        Callable<List> imageChartBodyRecListCallable = ()->{
+            QueryWrapper<ImageChart> imageChartBodyRecQueryWrapper = new QueryWrapper<>();
+            imageChartBodyRecQueryWrapper.eq("delete_flag",0);
+            imageChartBodyRecQueryWrapper.likeRight("display_location","good-detail-rec");
+            List<ImageChart> imageChartBodyRecList =  imageChartService.list(imageChartBodyRecQueryWrapper);
+            return imageChartBodyRecList;
+        };
+
         //获取子商品数据
         Callable<List> subGoodInfoCallable = ()->{
             List<SubGoodInfo> subGoodInfoList =  goodInfoService.querySubGoodListByParentId(id);
@@ -95,6 +104,7 @@ public class WxGoodController {
         FutureTask<GoodInfo> goodInfoTask = new FutureTask<>(goodInfoCallable);
         FutureTask<List> imageChartHeadTask = new FutureTask<>(imageChartHeadListCallable);
         FutureTask<List> imageChartBodyTask = new FutureTask<>(imageChartBodyListCallable);
+        FutureTask<List> imageChartBodyRecTask = new FutureTask<>(imageChartBodyRecListCallable);
         FutureTask<List> subGoodInfoTask = new FutureTask<>(subGoodInfoCallable);
         FutureTask<List> specPropertyTask = new FutureTask<>(specPropertyCallable);
 
@@ -102,6 +112,7 @@ public class WxGoodController {
         executorService.submit(goodInfoTask);
         executorService.submit(imageChartHeadTask);
         executorService.submit(imageChartBodyTask);
+        executorService.submit(imageChartBodyRecTask);
         executorService.submit(subGoodInfoTask);
         executorService.submit(specPropertyTask);
 
@@ -110,6 +121,7 @@ public class WxGoodController {
             entity.put("good", goodInfoTask.get());
             entity.put("goodImages", imageChartHeadTask.get());
             entity.put("goodDesc", imageChartBodyTask.get());
+            entity.put("goodDescRec", imageChartBodyRecTask.get());
             entity.put("subGood", subGoodInfoTask.get());
             entity.put("goodSpec", specPropertyTask.get());
             //缓存数据，没做先pass
