@@ -1,7 +1,0 @@
-spring:
-  profiles:
-    active: db
-
-#默认服务端口 8080
-server:
-  port: 8080
